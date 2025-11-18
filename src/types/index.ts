@@ -42,7 +42,7 @@ export interface CartItem {
   quantity: number;
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'completed' | 'cancelled';
+export type OrderStatus = 'pending' | 'processing' | 'ready' | 'delivered' | 'cancelled';
 
 export interface Order {
   id: string;

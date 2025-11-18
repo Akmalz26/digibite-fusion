@@ -82,7 +82,7 @@ export const OrderHistoryPage = () => {
                 <Button variant="outline" className="flex-1">
                   Lihat Detail
                 </Button>
-                {order.status === 'completed' && (
+                {order.status === 'delivered' && (
                   <Button className="flex-1 gradient-primary">
                     Pesan Lagi
                   </Button>

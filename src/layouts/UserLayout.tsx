@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/button';
 import { FloatingCart } from '@/components/FloatingCart';
 import { useCartStore } from '@/store/cartStore';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export const UserLayout = () => {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export const UserLayout = () => {
                 <div className="font-medium">{user?.name}</div>
               </div>
             </div>
+            <ThemeToggle />
             <Button variant="ghost" size="icon" onClick={handleLogout}>
               <LogOut className="w-5 h-5" />
             </Button>

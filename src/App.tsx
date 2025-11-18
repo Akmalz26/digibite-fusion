@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { LoginPage } from "@/pages/LoginPage";
 import { UserLayout } from "@/layouts/UserLayout";
@@ -12,6 +13,11 @@ import { TenantDetailPage } from "@/pages/user/TenantDetailPage";
 import { CartPage } from "@/pages/user/CartPage";
 import { CheckoutPage } from "@/pages/user/CheckoutPage";
 import { OrderHistoryPage } from "@/pages/user/OrderHistoryPage";
+import { SellerLayout } from "@/layouts/SellerLayout";
+import { SellerDashboard } from "@/pages/seller/SellerDashboard";
+import { SellerProducts } from "@/pages/seller/SellerProducts";
+import { SellerOrders } from "@/pages/seller/SellerOrders";
+import { SellerRevenue } from "@/pages/seller/SellerRevenue";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -19,10 +25,11 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<LoginPage />} />
@@ -41,17 +48,29 @@ const App = () => (
             <Route path="history" element={<OrderHistoryPage />} />
           </Route>
 
-          {/* Seller Routes - Coming Soon */}
+          {/* Seller Routes */}
           <Route path="/seller" element={
             <ProtectedRoute allowedRoles={['seller']}>
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                  <h1 className="text-3xl font-bold text-gradient mb-4">Seller Dashboard</h1>
-                  <p className="text-muted-foreground">Coming Soon...</p>
-                </div>
-              </div>
+              <SellerLayout />
             </ProtectedRoute>
-          } />
+          }>
+            <Route index element={<SellerDashboard />} />
+            <Route path="products" element={<SellerProducts />} />
+            <Route path="orders" element={<SellerOrders />} />
+            <Route path="revenue" element={<SellerRevenue />} />
+            <Route path="store" element={
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold mb-2">Store Settings</h2>
+                <p className="text-muted-foreground">Coming Soon...</p>
+              </div>
+            } />
+            <Route path="settings" element={
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold mb-2">Settings</h2>
+                <p className="text-muted-foreground">Coming Soon...</p>
+              </div>
+            } />
+          </Route>
 
           {/* Admin Routes - Coming Soon */}
           <Route path="/admin" element={
@@ -70,6 +89,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 
