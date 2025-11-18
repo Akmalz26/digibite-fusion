@@ -1,26 +1,20 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 
 const Index = () => {
-  const navigate = useNavigate();
   const { isAuthenticated, user } = useAuthStore();
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      // Redirect to appropriate dashboard based on role
-      const paths = {
-        admin: '/admin',
-        seller: '/seller',
-        user: '/user',
-      };
-      navigate(paths[user.role]);
-    } else {
-      navigate('/login');
-    }
-  }, [isAuthenticated, user, navigate]);
+  if (isAuthenticated && user) {
+    // Redirect to appropriate dashboard based on role
+    const paths = {
+      admin: '/admin',
+      seller: '/seller',
+      user: '/user',
+    };
+    return <Navigate to={paths[user.role]} replace />;
+  }
 
-  return null;
+  return <Navigate to="/login" replace />;
 };
 
 export default Index;
