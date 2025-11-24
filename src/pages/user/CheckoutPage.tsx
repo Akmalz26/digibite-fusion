@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CreditCard, Smartphone, Building2, CheckCircle } from 'lucide-react';
+import { CreditCard, Smartphone, Building2, CheckCircle, Copy, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GlassCard } from '@/components/GlassCard';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useCartStore } from '@/store/cartStore';
 import { PaymentMethod } from '@/types';
 import { toast } from 'sonner';
@@ -37,25 +38,39 @@ export const CheckoutPage = () => {
   const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>('qris');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   if (items.length === 0) {
     navigate('/user/cart');
     return null;
   }
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
+    setShowPaymentDialog(true);
+  };
+
+  const handlePaymentConfirm = async () => {
     setLoading(true);
+    setShowPaymentDialog(false);
     
-    // Simulate order processing
+    // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    clearCart();
-    toast.success('Pesanan berhasil dibuat!', {
-      description: 'Pesanan Anda sedang diproses',
-    });
-    
     setLoading(false);
+    setShowSuccessDialog(true);
+  };
+
+  const handleSuccessClose = () => {
+    clearCart();
+    setShowSuccessDialog(false);
+    toast.success('Pesanan berhasil dibuat!');
     navigate('/user/history');
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Disalin ke clipboard!');
   };
 
   const total = getTotalPrice() + 2000;
@@ -182,6 +197,155 @@ export const CheckoutPage = () => {
           </GlassCard>
         </div>
       </div>
+
+      {/* Payment Dialog */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="glass-strong border-primary/20 max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold">
+              {selectedPayment === 'qris' && 'Scan QRIS'}
+              {selectedPayment === 'transfer' && 'Transfer Bank'}
+              {selectedPayment === 'cash' && 'Pembayaran Cash'}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {selectedPayment === 'qris' && (
+              <div className="space-y-4">
+                <div className="bg-white p-6 rounded-2xl mx-auto w-64 h-64 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-48 h-48 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center">
+                      <Smartphone className="w-24 h-24 text-primary" />
+                    </div>
+                  </div>
+                </div>
+                <div className="glass p-4 rounded-xl text-center">
+                  <p className="text-sm text-muted-foreground mb-2">Total Pembayaran</p>
+                  <p className="text-2xl font-bold text-primary">
+                    Rp {total.toLocaleString('id-ID')}
+                  </p>
+                </div>
+                <p className="text-sm text-center text-muted-foreground">
+                  Scan kode QR dengan aplikasi e-wallet Anda
+                </p>
+              </div>
+            )}
+
+            {selectedPayment === 'transfer' && (
+              <div className="space-y-4">
+                <div className="glass p-6 rounded-xl space-y-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Nama Bank</p>
+                    <p className="text-lg font-bold">Bank Central Asia (BCA)</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Nomor Rekening</p>
+                    <div className="flex items-center justify-between glass-strong p-3 rounded-lg">
+                      <p className="text-xl font-bold">1234567890</p>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard('1234567890')}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Atas Nama</p>
+                    <p className="text-lg font-bold">Digibite Canteen</p>
+                  </div>
+                  <div className="border-t border-white/10 pt-4">
+                    <p className="text-sm text-muted-foreground mb-1">Total Transfer</p>
+                    <div className="flex items-center justify-between glass-strong p-3 rounded-lg">
+                      <p className="text-2xl font-bold text-primary">
+                        Rp {total.toLocaleString('id-ID')}
+                      </p>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => copyToClipboard(total.toString())}
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-center text-muted-foreground">
+                  Transfer sesuai nominal dan konfirmasi setelah pembayaran
+                </p>
+              </div>
+            )}
+
+            {selectedPayment === 'cash' && (
+              <div className="space-y-4">
+                <div className="glass p-8 rounded-xl text-center space-y-4">
+                  <div className="w-20 h-20 rounded-full gradient-primary mx-auto flex items-center justify-center">
+                    <CreditCard className="w-10 h-10" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">Total Pembayaran</p>
+                    <p className="text-3xl font-bold text-primary">
+                      Rp {total.toLocaleString('id-ID')}
+                    </p>
+                  </div>
+                  <div className="glass-strong p-4 rounded-lg">
+                    <p className="font-medium mb-2">Silakan bayar di kasir</p>
+                    <p className="text-sm text-muted-foreground">
+                      Tunjukkan pesanan ini kepada kasir saat mengambil makanan
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <Button
+              onClick={handlePaymentConfirm}
+              disabled={loading}
+              className="w-full gradient-primary glow-primary h-12"
+            >
+              {loading ? 'Memproses...' : 'Konfirmasi Pembayaran'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="glass-strong border-primary/20 max-w-md">
+          <div className="text-center space-y-6 py-6">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="w-24 h-24 rounded-full gradient-primary mx-auto flex items-center justify-center glow-primary"
+            >
+              <CheckCircle className="w-12 h-12 text-white" />
+            </motion.div>
+
+            <div className="space-y-2">
+              <h3 className="text-2xl font-bold">Pembayaran Berhasil!</h3>
+              <p className="text-muted-foreground">
+                Pesanan Anda telah berhasil dibuat dan sedang diproses
+              </p>
+            </div>
+
+            <div className="glass p-4 rounded-xl">
+              <p className="text-sm text-muted-foreground mb-1">Total Dibayar</p>
+              <p className="text-2xl font-bold text-primary">
+                Rp {total.toLocaleString('id-ID')}
+              </p>
+            </div>
+
+            <Button
+              onClick={handleSuccessClose}
+              className="w-full gradient-primary glow-primary h-12"
+            >
+              Lihat Riwayat Pesanan
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
