@@ -170,21 +170,21 @@ export function SellerOrders() {
               <div>
                 <h4 className="font-semibold mb-3">Order Items</h4>
                 <div className="space-y-3">
-                  {selectedOrder.items.map((item: any) => (
-                    <div key={item.productId} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  {selectedOrder.items.map((item: any, idx: number) => (
+                    <div key={idx} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
                       <img
-                        src={item.image}
-                        alt={item.productName}
+                        src={item.product.image}
+                        alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-lg"
                       />
                       <div className="flex-1">
-                        <p className="font-medium">{item.productName}</p>
+                        <p className="font-medium">{item.product.name}</p>
                         <p className="text-sm text-muted-foreground">
-                          Qty: {item.quantity} × Rp {item.price.toLocaleString('id-ID')}
+                          Qty: {item.quantity} × Rp {item.product.price.toLocaleString('id-ID')}
                         </p>
                       </div>
                       <p className="font-semibold">
-                        Rp {(item.quantity * item.price).toLocaleString('id-ID')}
+                        Rp {(item.quantity * item.product.price).toLocaleString('id-ID')}
                       </p>
                     </div>
                   ))}
