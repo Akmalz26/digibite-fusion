@@ -24,26 +24,84 @@ export const UserHomePage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="gradient-primary rounded-2xl p-8 glow-primary relative overflow-hidden"
+        className="gradient-primary rounded-3xl p-8 md:p-12 glow-primary relative overflow-hidden min-h-[280px]"
       >
+        {/* Animated Background Orbs */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-0 right-0 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+          className="absolute bottom-0 left-0 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.2, 0.3, 0.2],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl"
+        />
+
         <div className="relative z-10">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl md:text-5xl font-bold mb-3 text-white drop-shadow-lg"
+          >
             Selamat Datang di Digibite! 🎉
-          </h1>
-          <p className="text-white/90 mb-6">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-white/90 mb-8 text-base md:text-lg"
+          >
             Pesan makanan favoritmu dari kantin Digitech University
-          </p>
+          </motion.p>
           
-          {/* Search Bar */}
-          <div className="relative max-w-xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <Input
-              placeholder="Cari makanan atau minuman..."
-              className="pl-12 h-12 glass-strong border-white/20"
-            />
-          </div>
+          {/* Search Bar with Glass Effect */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="relative max-w-2xl"
+          >
+            <div className="glass-strong rounded-2xl p-1 glow-primary">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                <Input
+                  placeholder="Cari makanan atau minuman..."
+                  className="pl-12 h-14 bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-xl backdrop-blur-xl focus:bg-white/20 transition-all"
+                />
+              </div>
+            </div>
+          </motion.div>
         </div>
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
       </motion.div>
 
       {/* Categories */}
