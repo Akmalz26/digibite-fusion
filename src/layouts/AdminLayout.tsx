@@ -17,11 +17,14 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { ShoppingBag } from 'lucide-react';
+
 const navItems = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/admin/tenants', label: 'Tenants', icon: Store },
   { to: '/admin/products', label: 'Products', icon: Package },
   { to: '/admin/users', label: 'Users', icon: Users },
+  { to: '/admin/orders', label: 'Orders', icon: ShoppingBag },
   { to: '/admin/payments', label: 'Payments', icon: CreditCard },
   { to: '/admin/reports', label: 'Reports', icon: FileText },
 ];
