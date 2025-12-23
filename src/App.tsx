@@ -18,11 +18,14 @@ import { SellerDashboard } from "@/pages/seller/SellerDashboard";
 import { SellerProducts } from "@/pages/seller/SellerProducts";
 import { SellerOrders } from "@/pages/seller/SellerOrders";
 import { SellerRevenue } from "@/pages/seller/SellerRevenue";
-import { AdminLayout } from "@/layouts/AdminLayout";
-import { AdminDashboard } from "@/pages/admin/AdminDashboard";
-import { AdminTenants } from "@/pages/admin/AdminTenants";
-import { AdminProducts } from "@/pages/admin/AdminProducts";
-import { AdminUsers } from "@/pages/admin/AdminUsers";
+import { AdminLayout } from '@/layouts/AdminLayout';
+import { AdminDashboard } from '@/pages/admin/AdminDashboard';
+import { AdminTenants } from '@/pages/admin/AdminTenants';
+import { AdminProducts } from '@/pages/admin/AdminProducts';
+import { AdminUsers } from '@/pages/admin/AdminUsers';
+import { AdminOrders } from '@/pages/admin/AdminOrders';
+import { AdminPayments } from '@/pages/admin/AdminPayments';
+import { AdminReports } from '@/pages/admin/AdminReports';
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -87,18 +90,9 @@ const App = () => (
             <Route path="tenants" element={<AdminTenants />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="users" element={<AdminUsers />} />
-            <Route path="payments" element={
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-2">Payment Methods</h2>
-                <p className="text-muted-foreground">Coming Soon...</p>
-              </div>
-            } />
-            <Route path="reports" element={
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-2">Reports & Analytics</h2>
-                <p className="text-muted-foreground">Coming Soon...</p>
-              </div>
-            } />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="payments" element={<AdminPayments />} />
+            <Route path="reports" element={<AdminReports />} />
           </Route>
 
           {/* Catch All */}
