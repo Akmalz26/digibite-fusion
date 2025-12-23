@@ -47,11 +47,6 @@ All colors MUST be HSL.
     --glass-bg: 220 18% 12% / 0.4;
     --glass-border: 220 40% 50% / 0.2;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(220 90% 56%), hsl(220 70% 40%));
-    --gradient-accent: linear-gradient(135deg, hsl(190 90% 50%), hsl(220 90% 56%));
-    --gradient-glass: linear-gradient(135deg, hsl(220 18% 12% / 0.4), hsl(220 18% 15% / 0.2));
-
     /* Shadows */
     --shadow-glow: 0 0 40px hsl(220 90% 56% / 0.3);
     --shadow-neon: 0 0 20px hsl(220 90% 56% / 0.5);
@@ -210,13 +205,13 @@ All colors MUST be HSL.
     @apply bg-card/60 backdrop-blur-2xl border border-white/20;
   }
 
-  /* Gradient Backgrounds */
-  .gradient-primary {
-    background: linear-gradient(135deg, hsl(220 90% 56%), hsl(220 70% 40%));
+  /* Solid Blue Backgrounds */
+  .bg-primary-solid {
+    @apply bg-primary;
   }
 
-  .gradient-accent {
-    background: linear-gradient(135deg, hsl(190 90% 50%), hsl(220 90% 56%));
+  .bg-primary-dark {
+    background: hsl(220 70% 40%);
   }
 
   /* Glow Effects */
@@ -228,9 +223,9 @@ All colors MUST be HSL.
     box-shadow: 0 0 20px hsl(220 90% 56% / 0.5);
   }
 
-  /* Text Gradients */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  /* Text Colors */
+  .text-primary-glow {
+    @apply text-primary drop-shadow-[0_0_10px_hsl(220_90%_56%/0.5)];
   }
 
   /* Smooth Transitions */
